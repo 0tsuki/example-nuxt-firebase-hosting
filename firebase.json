@@ -1,12 +1,17 @@
 {
   "functions": {
     "predeploy": [
+      "npm run build",
+      "mv dist \"$RESOURCE_DIR\"",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
+    ],
+    "postdeploy": "rm -rf \"$RESOURCE_DIR\"/dist"
   },
   "hosting": {
-    "public": "dist",
+    "public": "empty",
+    "predeploy": "mkdir empty",
+    "postdeploy": "rm -rf empty",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -15,7 +20,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "function": "onRequestBasicAuth"
       }
     ]
   }
